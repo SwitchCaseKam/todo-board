@@ -1,0 +1,36 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--black-color);
+    color: var(--white-color);
+}
+
+.header__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.1em;
+    margin-left: 5em;
+}
+
+.header__title::before {
+    content: url('/assets/icons/list.png');
+    filter: invert();
+    margin: 0.25em;
+}
+
+.header__options {
+    display: flex;
+    list-style-type: none;
+    margin-right: 10em;
+}
+
+.option {
+    margin-left: 4em;
+}
+
+.option:hover {
+    cursor: pointer;
+    color: var(--hover-color);
+}
+

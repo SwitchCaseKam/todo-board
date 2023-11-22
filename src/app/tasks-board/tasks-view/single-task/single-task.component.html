@@ -1,0 +1,29 @@
+<div class="task" draggable="true" (click)="edit()">
+    <div class="header task__header">
+        <h1 class="header__title">{{ data.title }}</h1>
+        <h2 class="header__status">{{ data.status }}</h2>
+        <!-- <select class="header__status" name="status" id="status" 
+            (change)="handleStatusChange($event)" value="{{data.status}}">
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+                <option value="Blocked">Blocked</option>
+                <option value="Not Valid">Not Valid</option>
+        </select> -->
+    </div>
+
+    <div class="content task__content">
+        <p class="content__description">
+            {{ data.description }}
+        </p>
+    </div>
+
+    <div class="footer task__footer">
+        <span class="footer__assignee">Assignee: <b>{{ data.assignee }}</b></span>
+        <div>
+            <span class="footer__remaining-effort">Effort: <b></b>{{ data.estimation }} h</span>
+            <br>
+            <span class="footer__date">Created: {{ data.creationDate }}</span>
+        </div>
+    </div>
+</div>

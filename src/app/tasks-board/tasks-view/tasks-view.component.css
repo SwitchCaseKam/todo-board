@@ -1,0 +1,5 @@
+.tasks-view {
+    background-color: var(--light-grey-color);
+    width: 100%;
+    display: flex;
+}

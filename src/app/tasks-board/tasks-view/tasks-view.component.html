@@ -1,0 +1,7 @@
+<div class="tasks-view">
+    <app-category *ngFor="let categoryName of tasksCategories" 
+        title="{{ categoryName }}"
+        [tasks]="getTasks(categoryName)">
+    </app-category>
+
+</div>

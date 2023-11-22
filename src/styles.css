@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+:root {
+    --black-color: rgb(0, 0, 0);
+    --white-color: rgb(255, 255, 255);
+    --hover-color: rgb(255,165,0);
+    --grey-color: rgb(192,192,192);
+    --dark-grey-color: rgb(136, 129, 129);
+    --light-grey-color: rgb(209, 205, 205);
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

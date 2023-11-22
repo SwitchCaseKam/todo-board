@@ -1,0 +1,15 @@
+.category {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px dashed black;
+    width: 15em;
+    background-color: var(--white-color);
+    margin: 1em;
+}
+
+.category__title {
+    margin: 0;
+    text-align: center;
+    border: 1px solid var(--grey-color);
+    background-color: rgb(6, 206, 206);
+}

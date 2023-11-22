@@ -1,0 +1,13 @@
+.tasks-board {
+    display: flex;
+}
+
+.tasks-board__side-bar {
+    width: 10em;
+    height: 100%;
+    background-color: var(--grey-color);
+}
+
+.tasks-board__central-view {
+    width: 100%;
+}

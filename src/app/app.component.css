@@ -1,0 +1,23 @@
+.links {
+    text-align: center;
+}
+
+.link-button {
+    border: 1px solid black;
+    border-radius: 0.5em;
+    padding: 1em 3em;
+    margin: 1em;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.link-button:hover {
+    background-color: var(--hover-color);
+}
+
+.main-container {
+    margin-left: 10em;
+    margin-right: 10em;
+    border-top: none;
+    height: 92vh;
+}

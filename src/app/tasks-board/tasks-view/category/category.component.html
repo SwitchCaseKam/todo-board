@@ -1,0 +1,5 @@
+<div class="category">
+    <h3 class="category__title">{{ title }} ({{ tasks.length }})</h3>
+    <app-single-task *ngFor="let task of tasks" [data]="task">
+    </app-single-task>
+</div>

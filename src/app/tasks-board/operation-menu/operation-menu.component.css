@@ -1,0 +1,10 @@
+.menu {
+    background-color: var(--dark-grey-color);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.menu__project-name {
+    margin: 0.25em;
+}

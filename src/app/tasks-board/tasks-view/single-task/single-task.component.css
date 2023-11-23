@@ -20,6 +20,11 @@
     border-bottom: 1px solid var(--dark-grey-color);
 }
 
+.header__id {
+    font-size: 0.75em;
+    margin: 0;
+}
+
 .header__title {
     font-size: 1.2em;
     margin: 0;

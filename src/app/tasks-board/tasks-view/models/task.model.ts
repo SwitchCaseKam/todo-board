@@ -1,10 +1,10 @@
 export interface Task {
     id: number,
-    title: string,
+    name: string,
     description: string,
     status: Status,
     assignee: string,
-    creationDate: string,
+    creationDate?: string,
     estimation: number
 }
 

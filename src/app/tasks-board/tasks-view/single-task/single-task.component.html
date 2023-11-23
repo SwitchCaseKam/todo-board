@@ -1,6 +1,7 @@
 <div class="task" draggable="true" (click)="edit()">
     <div class="header task__header">
-        <h1 class="header__title">{{ data.title }}</h1>
+        <span class="header__id">ID: {{ data.id }}</span>   
+        <h1 class="header__title">{{ data.name }}</h1>
         <h2 class="header__status">{{ data.status }}</h2>
         <!-- <select class="header__status" name="status" id="status" 
             (change)="handleStatusChange($event)" value="{{data.status}}">

@@ -1,9 +1,12 @@
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TasksService } from '../../tasks-board/services/tasks.service';
-import { MatDialogClose } from '@angular/material/dialog';
-import { Status, Task } from '../../tasks-board/tasks-view/models/task.model';
+import { Status } from '../../tasks-board/tasks-view/models/task.model';
+import { ModalService } from '../../services/modal.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 enum TaskEditorMode {
   CREATE = 'create',
@@ -16,7 +19,8 @@ enum TaskEditorMode {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatDialogClose,
+    MatButtonModule,
+    MatDialogModule
   ],
   templateUrl: './task-editor.component.html',
   styleUrl: './task-editor.component.css'
@@ -28,12 +32,14 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
   
   private formBuilder: FormBuilder = inject(FormBuilder);
   private taskService: TasksService = inject(TasksService);
+  private modalService: ModalService = inject(ModalService);
 
   public taskForm = this.mode === TaskEditorMode.CREATE 
     ? this.formBuilder.group({
         id: 0,
         name: new FormControl(''),
         description: '',
+        status: new FormControl<Status>(Status.TODO),
         assignee: new FormControl(''),
         estimation: new FormControl()
       })
@@ -47,16 +53,31 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
       estimation: new FormControl()
     });
 
-  public ngOnInit(): void {
-    
+  public ngOnInit(): void {}
+
+  public ngOnDestroy(): void {}
+
+  public submitTask(): void {
+    switch(this.mode) {
+      case TaskEditorMode.CREATE:
+        this.createTask();
+        break;
+      case TaskEditorMode.EDIT:
+        this.updateTask();
+        break;
+      default:
+        this.createTask();
+    }
+    this.modalService.close();
   }
 
-  public ngOnDestroy(): void {
-    
+  public cancel(event: Event): void {
+    // event.preventDefault();
+    console.log(event)
+    event.stopPropagation()
   }
 
-  public createTask(): void {
-    console.log(this.taskForm.value)
+  private createTask(): void {
     this.taskService.createTask(
       this.taskForm.value.name!,
       this.taskForm.value.description!,
@@ -65,16 +86,18 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
     );
   }
 
-  public updateTask(): void {
-    console.log(this.taskForm.value)
+  private updateTask(): void {
     this.taskService.updateTask(
       this.taskForm.value.id!,
       this.taskForm.value.name!,
       this.taskForm.value.description!,
-      Status.TODO,
+      this.taskForm.value.status!,
       this.taskForm.value.assignee!,
       this.taskForm.value.estimation
     );
   }
+
+
+
   
 }

@@ -1,9 +1,10 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Status, Task } from '../models/task.model';
-import { TasksService } from '../../services/tasks.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskEditorComponent } from '../../../shared/task-editor/task-editor.component';
+import { DragItemService } from '../services/drag-item.service';
+
 
 @Component({
   selector: 'app-single-task',
@@ -12,7 +13,7 @@ import { TaskEditorComponent } from '../../../shared/task-editor/task-editor.com
   templateUrl: './single-task.component.html',
   styleUrl: './single-task.component.css'
 })
-export class SingleTaskComponent {
+export class SingleTaskComponent implements OnInit {
   @Input() data: Task = {
     id: 0,
     name: '',
@@ -22,9 +23,11 @@ export class SingleTaskComponent {
     creationDate: new Date().toLocaleDateString(),
     estimation: 0
   };
-  protected tasksService = inject(TasksService);
   private dialog = inject(MatDialog)
-  
+  private dragItemService = inject(DragItemService);
+
+  public ngOnInit(): void {}
+
   public edit() {
     const dialogRef = this.dialog.open(TaskEditorComponent);
     dialogRef.componentRef?.setInput('title', `Edit Task - id: ${this.data.id}`);
@@ -38,5 +41,9 @@ export class SingleTaskComponent {
       estimation: this.data.estimation
     })
     dialogRef.afterClosed().subscribe();
+  }
+
+  public onDragStart(event: any): void {
+    this.dragItemService.setDraggedTask(this.data);
   }
 }

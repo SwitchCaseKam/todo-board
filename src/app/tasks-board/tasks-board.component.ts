@@ -11,7 +11,8 @@ import { TasksViewComponent } from './tasks-view/tasks-view.component';
     CommonModule,
     SideBarComponent,
     OperationMenuComponent,
-    TasksViewComponent
+    TasksViewComponent,
+    
   ],
   templateUrl: './tasks-board.component.html',
   styleUrl: './tasks-board.component.css'

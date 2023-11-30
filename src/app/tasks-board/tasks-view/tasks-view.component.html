@@ -1,7 +1,92 @@
 <div class="tasks-view">
-    <app-category *ngFor="let categoryName of tasksCategories" 
-        title="{{ categoryName }}"
-        [tasks]="getTasks(categoryName)">
-    </app-category>
+    <div class="tasks-category"
+        cdkDropList
+        #todoList="cdkDropList"
+        [cdkDropListData]="getTasksMap('To Do')"
+        [cdkDropListConnectedTo]="[inProgressList, doneList, blockedList, notValidList]"
+        (cdkDropListDropped)="drop($event)"
+        (tasksUpdate)="handleTasksUpdate($event)">
+        <app-group-header 
+            name="To Do"
+            [tasks]="getTasksMap('To Do')">
+        </app-group-header>
+        @for (task of getTasksMap('To Do'); track task) {
+            <div cdkDrag>
+                <app-single-task [data]="task"></app-single-task>
+            </div>
+        }
+    </div>
 
+    <div class="tasks-category"
+        cdkDropList
+        #inProgressList="cdkDropList"
+        [cdkDropListData]="getTasksMap('In Progress')"
+        [cdkDropListConnectedTo]="[todoList, doneList, blockedList, notValidList]"
+        (cdkDropListDropped)="drop($event)"
+        (tasksUpdate)="handleTasksUpdate($event)">
+        <app-group-header 
+            name="In Progress"
+            [tasks]="getTasksMap('In Progress')">
+        </app-group-header>
+        @for (task of getTasksMap('In Progress'); track task) {
+            <div cdkDrag>
+                <app-single-task [data]="task"></app-single-task>
+            </div>
+        }
+    </div>
+
+    <div class="tasks-category"
+        cdkDropList
+        #doneList="cdkDropList"
+        [cdkDropListData]="getTasksMap('Done')"
+        [cdkDropListConnectedTo]="[inProgressList, todoList, blockedList, notValidList]"
+        (cdkDropListDropped)="drop($event)"
+        (tasksUpdate)="handleTasksUpdate($event)">
+        <app-group-header 
+            name="Done"
+            [tasks]="getTasksMap('Done')">
+        </app-group-header>
+        @for (task of getTasksMap('Done'); track task) {
+            <div cdkDrag>
+                <app-single-task [data]="task"></app-single-task>
+            </div>
+        }
+    </div>
+
+    <div class="tasks-category"
+        cdkDropList
+        #blockedList="cdkDropList"
+        [cdkDropListData]="getTasksMap('Blocked')"
+        [cdkDropListConnectedTo]="[inProgressList, todoList, notValidList, doneList]"
+        (cdkDropListDropped)="drop($event)"
+        (tasksUpdate)="handleTasksUpdate($event)">
+        <app-group-header 
+            name="Blocked"
+            [tasks]="getTasksMap('Blocked')">
+        </app-group-header>
+        @for (task of getTasksMap('Blocked'); track task) {
+            <div cdkDrag>
+                <app-single-task [data]="task"></app-single-task>
+            </div>
+        }
+    </div>
+
+    <div class="tasks-category"
+        cdkDropList
+        #notValidList="cdkDropList"
+        [cdkDropListData]="getTasksMap('Not Valid')"
+        [cdkDropListConnectedTo]="[inProgressList, todoList, doneList, blockedList]"
+        (cdkDropListDropped)="drop($event)"
+        (tasksUpdate)="handleTasksUpdate($event)">
+        <app-group-header 
+            name="Not Valid"
+            [tasks]="getTasksMap('Not Valid')">
+        </app-group-header>
+        @for (task of getTasksMap('Not Valid'); track task) {
+            <div cdkDrag>
+                <app-single-task [data]="task"></app-single-task>
+            </div>
+        }
+    </div>
 </div>
+

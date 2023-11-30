@@ -1,49 +1,14 @@
 <div class="task-editor-modal">
     <h1>{{ title }}</h1>
-    <form *ngIf="mode==='create'" [formGroup]="taskForm" (ngSubmit)="createTask()">
-        <div>
-            <label for="id">ID:</label>
-            <input id="id" type="number" formControlName="id">  
-        </div>
-        
+    <form [formGroup]="taskForm" (ngSubmit)="submitTask()">
         <div>
             <label for="name">Name:</label>
             <input id="name" type="text" formControlName="name" required>  
         </div>
 
-        <div>
-            <label for="name">Description:</label>
-            <textarea id="name" type="text" formControlName="description" required></textarea>
-        </div>
-
-        <div>
-            <label for="name">Assignee:</label>
-            <input id="name" type="text" formControlName="assignee" required>
-        </div>
-       
-        <div>
-            <label for="name">Estimation [hours]:</label>
-            <input id="name" type="number" formControlName="estimation" required>
-        </div>
-
-        <button mat-button mat-dialog-close type="submit" [disabled]="!taskForm.valid">Create</button>
-        <button mat-button mat-dialog-close>Cancel</button>
-    </form>
-
-    <form *ngIf="mode==='edit'" [formGroup]="taskForm" (ngSubmit)="updateTask()">
-        <div>
-            <label for="id">ID:</label>
-            <input id="id" type="number" formControlName="id">  
-        </div>
-
-        <div>
-            <label for="name">Name:</label>
-            <input id="name" type="text" formControlName="name" required>  
-        </div>
-
-        <div>
+        <div *ngIf="mode==='edit'">
             <label for="status">Status:</label>
-            <select class="header__status" name="status" id="status">
+            <select class="header__status" name="status" formControlName="status">
                     <option value="To Do">To Do</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Done">Done</option>
@@ -54,7 +19,7 @@
 
         <div>
             <label for="name">Description:</label>
-            <textarea id="name" type="text" formControlName="description" required></textarea>
+            <textarea class="form__textarea" id="name" type="text" formControlName="description" required></textarea>
         </div>
 
         <div>
@@ -67,7 +32,8 @@
             <input id="name" type="number" formControlName="estimation" required>
         </div>
 
-        <button mat-button mat-dialog-close type="submit" [disabled]="!taskForm.valid">Update</button>
-        <button mat-button mat-dialog-close>Cancel</button>
+        <button class="action-button" mat-button *ngIf="mode==='create'" type="submit" [disabled]="!taskForm.valid">Create</button>
+        <button class="action-button" mat-button *ngIf="mode==='edit'" type="submit" [disabled]="!taskForm.valid">Update</button>
+        <button class="action-button" mat-button [mat-dialog-close]="true">Cancel</button>
     </form>
 </div>

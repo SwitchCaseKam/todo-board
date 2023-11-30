@@ -1,16 +1,10 @@
-<div class="task" draggable="true" (click)="edit()">
+<div class="task" draggable="true" (mousedown)="onDragStart($event)" (click)="edit()">
     <div class="header task__header">
-        <span class="header__id">ID: {{ data.id }}</span>   
+        <div>
+            <p class="header__status">{{ data.status }}</p>  
+            <span class="header__id">ID: {{ data.id }}</span>
+        </div> 
         <h1 class="header__title">{{ data.name }}</h1>
-        <h2 class="header__status">{{ data.status }}</h2>
-        <!-- <select class="header__status" name="status" id="status" 
-            (change)="handleStatusChange($event)" value="{{data.status}}">
-                <option value="To Do">To Do</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
-                <option value="Blocked">Blocked</option>
-                <option value="Not Valid">Not Valid</option>
-        </select> -->
     </div>
 
     <div class="content task__content">

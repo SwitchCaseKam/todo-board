@@ -7,6 +7,7 @@ import { SingleTaskComponent } from './single-task/single-task.component';
 import { DragItemService } from './services/drag-item.service';
 import { Subscription } from 'rxjs';
 import { GroupHeaderComponent } from './group-header/group-header.component';
+import { TaskSelectService } from '../services/task-select.service';
 
 @Component({
   selector: 'app-tasks-view',
@@ -30,6 +31,7 @@ export class TasksViewComponent implements OnInit, OnDestroy {
   protected tasksSubscription = new Subscription();
   protected tasksService = inject(TasksService);
   protected dragItemService = inject(DragItemService);
+  protected taskSelectService = inject(TaskSelectService);
 
   public ngOnInit(): void {
     this.tasksSubscription = this.tasksService.getTasksMap().subscribe((tasksMap: Map<Status, Task[]>) => {
@@ -67,5 +69,9 @@ export class TasksViewComponent implements OnInit, OnDestroy {
   protected handleTasksUpdate(event: Event): void {
     // this.tasksMap.set(tasks[0].status, tasks);
     console.log(event)
+  }
+
+  public taskViewClick(): void {
+    // this.taskSelectService.resetSelectedTask();
   }
 }

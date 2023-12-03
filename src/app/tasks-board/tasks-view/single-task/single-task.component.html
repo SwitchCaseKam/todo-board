@@ -1,4 +1,4 @@
-<div class="task" draggable="true" (mousedown)="onDragStart($event)" (click)="edit()">
+<div [ngClass]="{'task-selected': isSelected}" class="task" draggable="true" (mousedown)="onDragStart()" (click)="displayTaskView()">
     <div class="header task__header">
         <div>
             <p class="header__status">{{ data.status }}</p>  

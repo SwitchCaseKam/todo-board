@@ -9,7 +9,7 @@
     border: 1px solid black;
 }
 
-.form__textarea {
+.task__descritpion, .form__textarea {
     height: 10em;
     width: 30em;
 }

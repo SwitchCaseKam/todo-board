@@ -14,4 +14,12 @@ export enum Status {
     DONE = "Done",
     BLOCKED = "Blocked",
     NOT_VALID = "Not Valid"
-}
+};
+
+export const STATUSES: Status[] = [
+    Status.TODO,
+    Status.IN_PROGRESS,
+    Status.DONE,
+    Status.BLOCKED,
+    Status.NOT_VALID
+];

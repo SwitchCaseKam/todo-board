@@ -25,27 +25,5 @@ import { Task } from '../models/task.model';
 export class GroupHeaderComponent {
   @Input() name: string = '';
   @Input() tasks: Task[] = [];
-  @Output() tasksUpdate = new EventEmitter<Task[]>();
 
-  public handledTasksAssignedToMe(): void {
-    this.tasks =  this.tasks.filter(task => task.assignee === 'bob');
-    console.log(this.tasks)
-    this.tasksUpdate.emit(this.tasks);
-  }
-
-  public handledFilterByAssignee(): void {
-
-  }
-
-  public sortByPriority(): void {
-  }
-
-  public sortByEffort(asc: boolean = true): void {
-    if (asc) {
-      this.tasks.sort((a, b) => a.estimation - b.estimation);
-    } else {
-      this.tasks.sort((a, b) => (a.estimation > b.estimation ? -1 : 1));
-    }
-    this.tasksUpdate.emit(this.tasks);
-  }
 }

@@ -4,6 +4,7 @@ import { Status, Task } from '../models/task.model';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskEditorComponent } from '../../../shared/task-editor/task-editor.component';
 import { DragItemService } from '../services/drag-item.service';
+import { TaskSelectService } from '../../services/task-select.service';
 
 
 @Component({
@@ -25,10 +26,20 @@ export class SingleTaskComponent implements OnInit {
   };
   private dialog = inject(MatDialog)
   private dragItemService = inject(DragItemService);
+  private taskSelectService = inject(TaskSelectService);
+  protected isSelected: boolean = false;
 
-  public ngOnInit(): void {}
 
-  public edit() {
+  public ngOnInit(): void {
+    this.taskSelectService.getCurrentSelectedTaskId().subscribe(
+      (taskId) => {
+        this.isSelected = taskId === this.data.id;
+        console.log(this.data.id, this.isSelected);
+      });
+  }
+
+  public edit(): void {
+    this.taskSelectService.setCurrentSelectedTaskId(this.data.id);
     const dialogRef = this.dialog.open(TaskEditorComponent);
     dialogRef.componentRef?.setInput('title', `Edit Task - id: ${this.data.id}`);
     dialogRef.componentRef?.setInput('mode', 'edit');
@@ -43,7 +54,16 @@ export class SingleTaskComponent implements OnInit {
     dialogRef.afterClosed().subscribe();
   }
 
-  public onDragStart(event: any): void {
+  public displayTaskView(): void {
+    this.taskSelectService.setCurrentSelectedTaskId(this.data.id);
+    const dialogRef = this.dialog.open(TaskEditorComponent);
+    dialogRef.componentRef?.setInput('title', `Details for ${this.data.id}`);
+    dialogRef.componentRef?.setInput('mode', 'view');
+    dialogRef.componentRef?.setInput('data', this.data);
+    dialogRef.afterClosed().subscribe();
+  }
+
+  public onDragStart(): void {
     this.dragItemService.setDraggedTask(this.data);
   }
 }

@@ -1,4 +1,22 @@
 <div class="menu">
     <h2 class="menu__project-name">{{projectName}}</h2>
+    <img class="category-header__menu" src="/assets/icons/dots-menu.png" [cdkMenuTriggerFor]="menu">
     <button (taskChanged)="abc()" class="menu__new-task-button" (click)="openTaskModalCreation()">Create New Task</button>
 </div>
+
+<ng-template #menu>
+    <div class="example-menu" cdkMenu>
+        <button class="example-menu-item" cdkMenuItem (click)="handledTasksAssignedToMe()">Assigned to me</button>
+        <button class="example-menu-item" cdkMenuItem (click)="handledFilterByAssignee()">Filter by assignee</button>
+        <button class="example-menu-item" cdkMenuItem [cdkMenuTriggerFor]="sortOptions">
+            Sort by effort <span>&#10148;</span>
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #sortOptions>
+    <div class="example-menu" cdkMenu>
+      <button class="example-menu-item" cdkMenuItem (click)="sortByEffort()">Ascending</button>
+      <button class="example-menu-item" cdkMenuItem (click)="sortByEffort(false)">Descending</button>
+    </div>
+</ng-template>

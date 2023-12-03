@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Status, Task } from '../tasks-view/models/task.model';
-import { TaskNode } from '../models/project.model';
+import { Project, TaskNode } from '../models/project.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
 
-  protected tasks: Task[] = [
+  private tasks: Task[] = [
     {
       id: 1,
       name: 'Task 1',
@@ -83,6 +83,9 @@ export class TasksService {
     }
   ];
 
+  private projects: Project[] = [];
+  private projects$: BehaviorSubject<Project[]> = new BehaviorSubject(this.projects);
+
   protected project: TaskNode[] = [{
     name: 'FirstProject', 
     children: [
@@ -95,11 +98,11 @@ export class TasksService {
         children: []
       },
       {
-        name: Status.BLOCKED.toString(),
+        name: Status.DONE.toString(),
         children: []
       },
       {
-        name: Status.DONE.toString(),
+        name: Status.BLOCKED.toString(),
         children: []
       },
       {
@@ -109,7 +112,7 @@ export class TasksService {
     ]
   }];
 
-  protected tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(this.tasks);
+  protected projectNull = this.project;
   protected project$: BehaviorSubject<TaskNode[]> = new BehaviorSubject<TaskNode[]>(this.project);
 
   protected tasksMap: Map<Status, Task[]> = new Map<Status, Task[]>([
@@ -122,16 +125,16 @@ export class TasksService {
   protected tasksMap$: BehaviorSubject<Map<Status, Task[]>> = new BehaviorSubject<Map<Status, Task[]>>(this.tasksMap);
 
   constructor() {
-    this.createProjectTree();
+    this.projects.push(
+      new Project('Pierwszy', this.tasks),
+      new Project('Drugi', this.tasks),
+      new Project('Trzeci', this.tasks),
+    );
+
+    console.log('PROJECT:', this.projects);
+
     this.createTasksMap();
-  }
-
-  public getTasks(): Observable<Task[]> {
-    return this.tasks$.asObservable();
-  }
-
-  public getProjectTree(): TaskNode[] {
-    return this.project;
+    this.createProjectTree();
   }
 
   public getProjectTree$(): Observable<TaskNode[]> {
@@ -142,48 +145,14 @@ export class TasksService {
     return this.tasksMap$.asObservable();
   }
 
-  public updateTasks(tasks: Task[]): void {
-    this.tasks = tasks;
-    this.tasks$.next(tasks);
-  }
-
-  public createProjectTree(): void {
-    this.tasks.forEach(task => {
-      const categoryIndex = this.project[0].children?.findIndex(c => c.name === task.status.toString())!;
-      const tasks = this.project[0].children?.filter(c => c.name === task.status.toString())!;
-      if (this.project[0].children && this.project[0].children[categoryIndex]) {
-        this.project[0].children[categoryIndex].children?.push({name: task.name});
-      }
-    });
-    this.project$.next(this.project);
-  }
-
-  public createTasksMap(): void {
-    this.tasksMap = new Map<Status, Task[]>([
-      [Status.TODO, []],
-      [Status.IN_PROGRESS, []],
-      [Status.DONE, []],
-      [Status.BLOCKED, []],
-      [Status.NOT_VALID, []]
-    ]);
-    this.tasks.forEach((task: Task) => {
-      const tasks = this.tasksMap.get(task.status)!;
-      tasks.push(task);
-      this.tasksMap.set(task.status, tasks);
-    });
-    this.tasksMap$.next(this.tasksMap);
-  }
-
-  public updateSingleTask(taskData: Task) {
-    const taskIndex = this.tasks.findIndex((task: Task) => task.id === taskData.id)!;
-    this.tasks.splice(taskIndex, 1);
-    this.tasks.push(taskData);
-    this.tasks$.next(this.tasks);
+  public getProjects(): Observable<Project[]> {
+    return this.projects$;
   }
 
   public updateTaskMap(taskMap: Map<Status, Task[]>): void {
     this.tasksMap = taskMap;
     this.tasksMap$.next(this.tasksMap);
+    this.createProjectTree();
   }
 
   public createTask(name: string, description: string, assignee: string, estimation: number): void {
@@ -200,10 +169,10 @@ export class TasksService {
       estimation: estimation
     };
     this.tasks.push(newTask);
-    this.tasks$.next(this.tasks);
     const todoTasks = this.tasksMap.get(Status.TODO);
     todoTasks?.push(newTask);
     this.tasksMap.set(Status.TODO, todoTasks!);
+    this.createProjectTree();
   }
 
   public updateTask(id: number, name: string, description: string, status: Status, assignee: string, estimation: number) {
@@ -219,7 +188,51 @@ export class TasksService {
     const tasks = this.tasks.filter(task => task.id !== id);
     tasks.push(newTask);
     this.tasks = tasks;
-    this.tasks$.next(tasks);
     this.createTasksMap();
+    this.createProjectTree();
+  }
+
+  public removeTask(id: number): void {
+    this.tasks = this.tasks.filter(task => task.id !== id);
+    this.createTasksMap();
+    this.createProjectTree();
+  }
+
+  private createProjectTree(): void {
+    this.project = this.projectNull;
+
+    const statuses: Status[] = [
+      Status.TODO,
+      Status.IN_PROGRESS,
+      Status.DONE,
+      Status.BLOCKED,
+      Status.NOT_VALID
+    ];
+
+    statuses.forEach((status, i) => {
+        if (this.project[0].children && this.project[0].children[i]) {
+            const tasks: Task[] = this.tasksMap.get(status)!;
+            this.project[0].children[i].children = tasks.map(t => {
+              return {name: `[${t.id}] ${t.name}`} as TaskNode
+            });
+        }
+    });
+      this.project$.next(this.project);
+  }
+
+  private createTasksMap(): void {
+    this.tasksMap = new Map<Status, Task[]>([
+      [Status.TODO, []],
+      [Status.IN_PROGRESS, []],
+      [Status.DONE, []],
+      [Status.BLOCKED, []],
+      [Status.NOT_VALID, []]
+    ]);
+    this.tasks.forEach((task: Task) => {
+      const tasks = this.tasksMap.get(task.status)!;
+      tasks.push(task);
+      this.tasksMap.set(task.status, tasks);
+    });
+    this.tasksMap$.next(this.tasksMap);
   }
 }

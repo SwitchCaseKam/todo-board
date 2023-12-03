@@ -6,6 +6,10 @@ import { TaskEditorComponent } from '../../shared/task-editor/task-editor.compon
 import { ModalService } from '../../services/modal.service';
 import { Dialog, DialogConfig } from '@angular/cdk/dialog';
 import {DialogModule} from '@angular/cdk/dialog';
+import {
+  CdkMenuItemRadio, CdkMenuItemCheckbox, CdkMenuGroup,
+  CdkMenu, CdkMenuTrigger, CdkMenuItem, CdkMenuBar,
+} from '@angular/cdk/menu';
 
 interface Modal {
   id: string;
@@ -18,7 +22,14 @@ interface Modal {
   imports: [
     CommonModule,
     TaskEditorComponent,
-    DialogModule
+    DialogModule,
+    CdkMenuBar,
+    CdkMenuItem,
+    CdkMenuTrigger,
+    CdkMenu,
+    CdkMenuGroup,
+    CdkMenuItemCheckbox,
+    CdkMenuItemRadio
   ],
   templateUrl: './operation-menu.component.html',
   styleUrl: './operation-menu.component.css'
@@ -36,5 +47,20 @@ export class OperationMenuComponent {
 
   abc() {
     console.log('cab')
+  }
+
+  public handledTasksAssignedToMe(): void {
+
+  }
+
+  public handledFilterByAssignee(): void {
+
+  }
+
+  public sortByPriority(): void {
+  }
+
+  public sortByEffort(asc: boolean = true): void {
+
   }
 }

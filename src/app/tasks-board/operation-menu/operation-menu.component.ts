@@ -1,20 +1,17 @@
-import { Component, Type, createComponent } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { inject } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TaskEditorComponent } from '../../shared/task-editor/task-editor.component';
 import { ModalService } from '../../services/modal.service';
-import { Dialog, DialogConfig } from '@angular/cdk/dialog';
 import {DialogModule} from '@angular/cdk/dialog';
 import {
   CdkMenuItemRadio, CdkMenuItemCheckbox, CdkMenuGroup,
   CdkMenu, CdkMenuTrigger, CdkMenuItem, CdkMenuBar,
 } from '@angular/cdk/menu';
+import { TasksViewService } from '../services/tasks-view.service';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
-interface Modal {
-  id: string;
-  visible: boolean;
-}
+
 
 @Component({
   selector: 'app-operation-menu',
@@ -29,14 +26,16 @@ interface Modal {
     CdkMenu,
     CdkMenuGroup,
     CdkMenuItemCheckbox,
-    CdkMenuItemRadio
+    CdkMenuItemRadio,
+    MatButtonModule
   ],
   templateUrl: './operation-menu.component.html',
   styleUrl: './operation-menu.component.css'
 })
-export class OperationMenuComponent {
+export class OperationMenuComponent implements OnInit {
   protected projectName: string = 'Default name';
   private modalService = inject(ModalService);
+  private tasksViewService: TasksViewService = inject(TasksViewService);
 
   public openTaskModalCreation(): void {
     const dialogRef = this.modalService.open('task', TaskEditorComponent);
@@ -45,8 +44,10 @@ export class OperationMenuComponent {
     dialogRef.afterClosed().subscribe();
   }
 
-  abc() {
-    console.log('cab')
+  public ngOnInit(): void {
+    this.tasksViewService.getSelectedProjectName$().subscribe(
+      selectedProjectName => this.projectName = selectedProjectName
+    )
   }
 
   public handledTasksAssignedToMe(): void {

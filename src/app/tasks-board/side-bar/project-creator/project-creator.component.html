@@ -1,0 +1,14 @@
+<div class="project-creator">
+    <h1>Create New Project</h1>
+    <form [formGroup]="projectForm" (ngSubmit)="createNewProject()">
+        <input type="text" formControlName="name" required>
+        <br>
+        <mat-error *ngIf="projectForm.get('name')?.hasError('whiteSpace')">Project name cannot includes white spaces!</mat-error>
+        <mat-error *ngIf="projectForm.get('name')?.hasError('nonUniqueValue')">Such project name already exists!</mat-error>
+        <mat-error *ngIf="projectForm.get('name')?.hasError('required')">Name of project is required</mat-error>
+        <br>
+        <br>
+        <button mat-button [mat-dialog-close]="true" type="submit" [disabled]="!projectForm.valid">Create</button>
+        <button mat-button [mat-dialog-close]="true">Cancel</button>
+    </form>
+</div>

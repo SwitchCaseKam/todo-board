@@ -6,8 +6,8 @@
         <h3>Description:</h3>
         <textarea class="form__textarea" type="text" formControlName="description" required></textarea>
         
-        <h3>Status:</h3>
-        <select class="header__status" name="status" formControlName="status">
+        <h3 *ngIf="mode === 'edit'">Status:</h3>
+        <select *ngIf="mode === 'edit'" class="header__status" name="status" formControlName="status">
             <option value="To Do">To Do</option>
             <option value="In Progress">In Progress</option>
             <option value="Done">Done</option>
@@ -29,6 +29,7 @@
     <div *ngIf="mode === 'view'">
         <button class="action-button" mat-button (click)="editMode()">Edit</button>
         <button class="action-button" mat-button [mat-dialog-close]="true" (click)="removeTask($event)">Delete item</button>
+        <button class="action-button" mat-button [mat-dialog-close]="true">Close</button>
         <h2>[{{ data.id }}] {{ data.name }}</h2>
         <br>
         <h3>Description:</h3>

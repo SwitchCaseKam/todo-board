@@ -6,7 +6,8 @@ import { Status, Task } from '../../tasks-board/tasks-view/models/task.model';
 import { ModalService } from '../../services/modal.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { TasksViewService } from '../../tasks-board/services/tasks-view.service';
+import { Subscription } from 'rxjs';
 
 enum TaskEditorMode {
   VIEW = 'view',
@@ -42,7 +43,10 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
   
   private formBuilder: FormBuilder = inject(FormBuilder);
   private taskService: TasksService = inject(TasksService);
+  private tasksViewService: TasksViewService = inject(TasksViewService);
   private modalService: ModalService = inject(ModalService);
+  private selectedProjectName: string = '';
+  private selectedProjectNameSub = new Subscription();
 
   public taskForm = this.mode === TaskEditorMode.CREATE 
     ? this.formBuilder.group({
@@ -63,9 +67,15 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
       estimation: new FormControl()
     });
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.selectedProjectNameSub = this.tasksViewService.getSelectedProjectName$().subscribe(
+      selectedProjectName => this.selectedProjectName = selectedProjectName
+    )
+  }
 
-  public ngOnDestroy(): void {}
+  public ngOnDestroy(): void {
+    this.selectedProjectNameSub.unsubscribe();
+  }
 
   public submitTask(): void {
     switch(this.mode) {
@@ -82,13 +92,12 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
   }
 
   public cancel(event: Event): void {
-    // event.preventDefault();
     console.log(event)
     event.stopPropagation()
   }
 
   public removeTask(event: Event): void {
-    this.taskService.removeTask(this.data.id);
+    this.taskService.deleteTask(this.selectedProjectName, this.data.id);
     event.preventDefault()
 
   }
@@ -107,6 +116,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
 
   private createTask(): void {
     this.taskService.createTask(
+      this.selectedProjectName,
       this.taskForm.value.name!,
       this.taskForm.value.description!,
       this.taskForm.value.assignee!,
@@ -116,6 +126,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
 
   private updateTask(): void {
     this.taskService.updateTask(
+      this.selectedProjectName,
       this.taskForm.value.id!,
       this.taskForm.value.name!,
       this.taskForm.value.description!,
@@ -124,6 +135,14 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
       this.taskForm.value.estimation
     );
   }
+
+  // id: number,
+  // name: string,
+  // description: string,
+  // status: Status,
+  // assignee: string,
+  // creationDate?: string,
+  // estimation: number
 
 
 

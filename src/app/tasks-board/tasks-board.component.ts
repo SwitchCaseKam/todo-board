@@ -5,8 +5,10 @@ import { OperationMenuComponent } from './operation-menu/operation-menu.componen
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
 import { TasksService } from './services/tasks.service';
 import { Subscription } from 'rxjs';
-import { Project, TaskNode } from './models/project.model';
+import { Project, TaskNode, tasksMapInitValue } from './models/project.model';
 import { Status, Task } from './tasks-view/models/task.model';
+import { TasksViewService } from './services/tasks-view.service';
+import { cloneDeep } from 'lodash';
 
 
 @Component({
@@ -24,23 +26,27 @@ import { Status, Task } from './tasks-view/models/task.model';
 })
 export class TasksBoardComponent implements OnInit, OnDestroy{
 
-  private tasksService: TasksService = inject(TasksService);
+  private tasksViewService: TasksViewService = inject(TasksViewService);
   private projectsDataSubscription: Subscription = new Subscription();
 
-  protected selectedProject = '';
+  protected selectedProjectName = '';
+
   protected sideBarData: TaskNode[] = [];
-  protected operationMenuData!: Map<Status, Task[]>;
-  protected tasksViewData!: Map<Status, Task[]>; 
+  protected operationMenu: Map<Status, Task[]> = tasksMapInitValue;
+  protected tasksView: Task[] = [];
 
   public ngOnInit(): void {
-    this.projectsDataSubscription = this.tasksService.getProjects().subscribe(
-      (projectsData: Project[]) => {
-        console.log('[tasks-board-component]', projectsData);
-        // const projects = [];
-        // projectsData.forEach(project => {
-        //   project.tasksTree
-        // });
-        // this.sideBarData = projectsData.
+    this.tasksViewService.getTasksViewData$().subscribe(tasksViewData2 => {
+      const tasksViewData = cloneDeep(tasksViewData2);
+      this.sideBarData = tasksViewData.sideBar;
+      this.operationMenu = tasksViewData.operationMenu;
+      this.tasksView = tasksViewData.tasksView;
+    });
+
+    this.tasksViewService.getSelectedProjectName$().subscribe(
+      projectName => {
+        console.log('[tasks-board-component] selected project', projectName)
+        this.selectedProjectName = projectName;
       }
     );
   }

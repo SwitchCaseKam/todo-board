@@ -32,10 +32,8 @@ export class SingleTaskComponent implements OnInit {
 
   public ngOnInit(): void {
     this.taskSelectService.getCurrentSelectedTaskId().subscribe(
-      (taskId) => {
-        this.isSelected = taskId === this.data.id;
-        console.log(this.data.id, this.isSelected);
-      });
+      (taskId) => this.isSelected = taskId === this.data.id
+    );
   }
 
   public edit(): void {

@@ -1,7 +1,9 @@
 <div class="menu">
     <h2 class="menu__project-name">{{projectName}}</h2>
-    <img class="category-header__menu" src="/assets/icons/dots-menu.png" [cdkMenuTriggerFor]="menu">
-    <button (taskChanged)="abc()" class="menu__new-task-button" (click)="openTaskModalCreation()">Create New Task</button>
+    <div>
+        <img class="category-header__menu" src="/assets/icons/dots-menu.png" [cdkMenuTriggerFor]="menu">
+        <button mat-button class="menu__new-task-button" (click)="openTaskModalCreation()">Create New Task</button>    
+    </div>
 </div>
 
 <ng-template #menu>

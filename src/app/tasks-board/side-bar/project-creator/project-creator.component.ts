@@ -43,10 +43,10 @@ export class ProjectCreatorComponent implements OnInit {
       return (control: AbstractControl): { [key: string]: any } | null => {
         const projectName = control.value;
         if (this.projectsNames.some(name => name === projectName)) {
-          return { 'nonUniqueValue': true }
+          return { 'nonUniqueValue': true };
         } 
         if (projectName.includes(' ')) {
-          return { 'whiteSpace': true }
+          return { 'whiteSpace': true };
         } 
         return null;
   

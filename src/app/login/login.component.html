@@ -1,0 +1,9 @@
+<div>
+    <form class="login" [formGroup]="loginForm" (ngSubmit)="logIn()">
+        <h1 class="login__title">Log In</h1>
+        <input class="login__login-name-input" placeholder="Login" formControlName="loginName">
+        <input class="login__password-input" type="password" placeholder="Password" formControlName="password">
+        <mat-error *ngIf="loginForm.get('loginName')?.hasError('userDoesntExist')">This user is not registered</mat-error>
+        <button class="login__button" type="submit" [disabled]="!loginForm.valid">Log In</button>
+    </form>
+</div>

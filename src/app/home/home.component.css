@@ -1,0 +1,28 @@
+.title, .subtitle {
+    font-weight: lighter;
+}
+
+.text {
+    font-weight: lighter;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+}
+
+.info__paddle {
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 0.5em;
+    padding: 1em;
+    margin: 1em 3em;
+}
+
+.info__paddle:nth-child(2n) {
+    background-color: rgb(44, 44, 44);
+}
+
+a {
+    color: var(--hover-color);
+}

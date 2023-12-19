@@ -9,7 +9,7 @@ import { tasks1, tasks2 } from './tasks.example-data';
 })
 export class TasksService {
 
-  private tasks: Task[] = tasks1;
+  private tasks1: Task[] = tasks1;
   private tasks2: Task[] = tasks2;
 
   private projects: Project[] = [];
@@ -17,13 +17,17 @@ export class TasksService {
 
   constructor() {
     this.projects.push(
-      new Project('Pierwszy', this.tasks),
+      new Project('Pierwszy', this.tasks1),
       new Project('Drugi', this.tasks2)
     );
   }
 
   public getProjects(): Observable<Project[]> {
     return this.projects$;
+  }
+
+  public getProjects2(): Project[] {
+    return this.projects;
   }
 
   public createNewProject(projectName: string) {
@@ -66,9 +70,8 @@ export class TasksService {
     };
     const currentProject = this.projects.find(p => p.name === projectName);
     if (currentProject) {
-      const tasks = currentProject.tasks.filter(task => task.id !== taskId);
-      tasks.push(newTask);
-      currentProject.tasks = tasks;
+      const taskIndex = currentProject.tasks.findIndex(task => task.id === taskId)!;
+      currentProject.tasks[taskIndex] = newTask;
       this.updateProjectData(projectName, currentProject.tasks);
     }
   }

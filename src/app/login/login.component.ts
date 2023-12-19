@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { MatInputModule } from '@angular/material/input';
+import { TooltipPosition, MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -12,6 +13,7 @@ import { Router, RouterModule } from '@angular/router';
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatTooltipModule,
     RouterModule
   ],
   templateUrl: './login.component.html',
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
+  protected infoTooltipText = `Registered users: ${this.authService.getAllRegisteredUsers().join(', ')}`
 
   protected loginForm: FormGroup = this.formBuilder.group({
       loginName: new FormControl('', [Validators.required, this.validateUserName()]),

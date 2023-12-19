@@ -1,11 +1,11 @@
 <div class="header">
-    <h1 class="header__title">todo board</h1>
-    <div>
-        <ul class="header__options" *ngIf="logInFlag">
-            <li class="option" [routerLink]="['/home']">Home</li>
+    <h1 class="header__title" [routerLink]="['/home']">todo board</h1>
+    <div class="header__menu" *ngIf="logInFlag">
+        <ul class="options">
+            <!-- <li class="option" [routerLink]="['/home']">Home</li> -->
             <li class="option" [routerLink]="['/board']">Board</li>
+            <li>Logged In user: <b>{{currentLoggedInUsername}}</b></li>
+            <li class="option" (click)="logOut()" [routerLink]="['/login']">Log Out</li>
         </ul>
-        <span *ngIf="logInFlag">{{currentLoggedInUsername}}</span>
-        <button *ngIf="logInFlag" (click)="logOut()" [routerLink]="['/login']">Log Out</button>
     </div>
 </div>

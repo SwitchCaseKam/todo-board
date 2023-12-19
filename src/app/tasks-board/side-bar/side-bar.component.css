@@ -1,7 +1,11 @@
+.task-node, .project-node {
+  color: white
+}
+
 .task-node:hover, .project-node:hover {
   cursor: pointer;
-  background-color: rgb(60, 60, 228);
-  color: white;
+  background-color: rgb(221, 177, 31);
+  color: black;
 }
 
 .create-project-button {
@@ -9,4 +13,9 @@
   border: 1px solid black;
   font-size: 1em;
   text-align: center;
+}
+
+.projects-tree {
+  background-color: black;
+  color: white;
 }

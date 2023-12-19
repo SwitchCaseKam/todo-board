@@ -3,11 +3,16 @@
 }
 
 .tasks-board__side-bar {
-    width: 16em;
+    width: 20em;
     height: 100%;
     background-color: rgb(31, 26, 26)
 }
 
 .tasks-board__central-view {
     width: 100%;
+}
+
+.information-text {
+    text-align: center;
+    font-weight: lighter;
 }

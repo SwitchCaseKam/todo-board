@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, Input, OnChanges, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTree, MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,22 +37,32 @@ export class SideBarComponent implements OnInit, OnDestroy, OnChanges {
   private sideBarService: SideBarService = inject(SideBarService);
   private modalService = inject(ModalService);
   private prevExpansionModel: FlatNode[] = [];
+  private selectedProject: string = '';
 
   public ngOnInit(): void {
-    this.prevExpansionModel = this.treeControl.expansionModel.selected;
+    this.sideBarService.setTasksListExpansionModel(this.treeControl.expansionModel.selected);
     this.dataSource.data = this.projects;
-  }
-
-  public ngOnDestroy(): void {}
-
-  public ngOnChanges() {
-    this.dataSource.data = this.projects;
-    this.prevExpansionModel = this.treeControl.expansionModel.selected;
+    this.prevExpansionModel = this.sideBarService.getTaskListExpansionModel();
     this.prevExpansionModel.forEach(n => {
       this.treeControl.dataNodes.forEach(d => {
         if (n.name === d.name) { this.treeControl.expand(d); }
       });
     });
+  }
+
+
+  public ngOnChanges() {
+    this.dataSource.data = this.projects;
+    this.prevExpansionModel = this.sideBarService.getTaskListExpansionModel();
+    this.prevExpansionModel.forEach(n => {
+      this.treeControl.dataNodes.forEach(d => {
+        if (n.name === d.name) { this.treeControl.expand(d); }
+      });
+    });
+  }
+
+  public ngOnDestroy(): void {
+    
   }
 
   protected createNewProject(): void {
@@ -64,14 +74,22 @@ export class SideBarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   protected selectTask(node: FlatNode): void {
+    this.sideBarService.setTasksListExpansionModel(this.treeControl.expansionModel.selected);
     this.taskSelectService.setCurrentSelectedTaskId(
       Number(node.name.split(' ')[0].replace('[', '').replace(']', ''))
     );
   }
 
   protected selectProject(node: FlatNode): void {
+    this.sideBarService.setTasksListExpansionModel(this.treeControl.expansionModel.selected);
     if (node.level > 1) return;
     this.tasksViewService.setSelectedProjectName(node.name);
+    this.selectedProject = node.name;
+
+  }
+
+  protected expandClicked(): void {
+    this.sideBarService.setTasksListExpansionModel(this.treeControl.expansionModel.selected);
   }
 
   private _transformer = (node: TaskNode, level: number) => {
@@ -91,7 +109,7 @@ export class SideBarComponent implements OnInit, OnDestroy, OnChanges {
     this._transformer,
     (node) => node.level,
     (node) => node.expandable,
-    (node) => node.children
+    (node) => node.children,
   );
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);

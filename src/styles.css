@@ -6,6 +6,7 @@ body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--black-color);
     color: var(--white-color);
+    font-weight: normal;
 }
 
 :root {
@@ -17,4 +18,5 @@ body {
     --light-grey-color: rgb(209, 205, 205);
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-weight: normal;}
+

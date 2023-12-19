@@ -36,7 +36,7 @@ export class SingleTaskComponent implements OnInit {
     );
   }
 
-  public edit(): void {
+  protected edit(): void {
     this.taskSelectService.setCurrentSelectedTaskId(this.data.id);
     const dialogRef = this.dialog.open(TaskEditorComponent);
     dialogRef.componentRef?.setInput('title', `Edit Task - id: ${this.data.id}`);
@@ -52,16 +52,17 @@ export class SingleTaskComponent implements OnInit {
     dialogRef.afterClosed().subscribe();
   }
 
-  public displayTaskView(): void {
+  protected displayTaskView(): void {
     this.taskSelectService.setCurrentSelectedTaskId(this.data.id);
     const dialogRef = this.dialog.open(TaskEditorComponent);
-    dialogRef.componentRef?.setInput('title', `Details for ${this.data.id}`);
+    dialogRef.componentRef?.setInput('title', `[${this.data.id}] ${this.data.name}`);
     dialogRef.componentRef?.setInput('mode', 'view');
     dialogRef.componentRef?.setInput('data', this.data);
     dialogRef.afterClosed().subscribe();
   }
 
-  public onDragStart(): void {
+  protected onDragStart(): void {
     this.dragItemService.setDraggedTask(this.data);
+    this.taskSelectService.setCurrentSelectedTaskId(this.data.id);
   }
 }

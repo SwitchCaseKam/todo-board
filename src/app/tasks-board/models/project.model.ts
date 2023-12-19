@@ -3,13 +3,15 @@ import { BehaviorSubject } from 'rxjs';
 
 export interface TaskNode {
     name: string,
-    children?: TaskNode[]
+    assignee?: string,
+    children?: TaskNode[],
+    rootProjectName?: string
 }
 
 export interface FlatNode {
-    expandable: boolean;
-    name: string;
-    level: number;
+    expandable: boolean,
+    name: string,
+    level: number,
 }
 
 export const tasksMapInitValue = new Map([
@@ -31,22 +33,14 @@ export class Project {
     public tasksMap$: BehaviorSubject<Map<Status, Task[]>>;
     public tasksTree$: BehaviorSubject<TaskNode[]>;
 
-    private tasksMapInitValue = new Map([
-        [Status.TODO, []],
-        [Status.IN_PROGRESS, []],
-        [Status.DONE, []],
-        [Status.BLOCKED, []],
-        [Status.NOT_VALID, []]
-    ]);
-
     private tasksTreeInitValue = [{
-        name: this.name, 
+        name: this.name,
         children: [
-          { name: Status.TODO.toString(), children: [] },
-          { name: Status.IN_PROGRESS.toString(), children: [] },
-          { name: Status.DONE.toString(), children: [] },
-          { name: Status.BLOCKED.toString(), children: []},
-          { name: Status.NOT_VALID.toString(), children: [] }
+          { name: Status.TODO.toString(), children: [], rootProjectName: this.name },
+          { name: Status.IN_PROGRESS.toString(), children: [], rootProjectName: this.name },
+          { name: Status.DONE.toString(), children: [], rootProjectName: this.name },
+          { name: Status.BLOCKED.toString(), children: [], rootProjectName: this.name },
+          { name: Status.NOT_VALID.toString(), children: [], rootProjectName: this.name }
         ]
     }];
     
@@ -65,11 +59,11 @@ export class Project {
         this.tasksTree = [{
             name: this.name, 
             children: [
-              { name: Status.TODO.toString(), children: [] },
-              { name: Status.IN_PROGRESS.toString(), children: [] },
-              { name: Status.DONE.toString(), children: [] },
-              { name: Status.BLOCKED.toString(), children: []},
-              { name: Status.NOT_VALID.toString(), children: [] }
+              { name: Status.TODO.toString(), children: [], rootProjectName: this.name },
+              { name: Status.IN_PROGRESS.toString(), children: [], rootProjectName: this.name },
+              { name: Status.DONE.toString(), children: [], rootProjectName: this.name },
+              { name: Status.BLOCKED.toString(), children: [], rootProjectName: this.name},
+              { name: Status.NOT_VALID.toString(), children: [], rootProjectName: this.name }
             ]
         }];
         this.createTasksMap();
@@ -97,8 +91,7 @@ export class Project {
             const tasks = this.tasksMap.get(task.status)!;
             tasks.push(task);
             this.tasksMap.set(task.status, tasks);
-        });
-        
+        });   
         this.tasksMap$ = new BehaviorSubject(this.tasksMap);
     }
 
@@ -106,18 +99,18 @@ export class Project {
         this.tasksTree = [{
             name: this.name, 
             children: [
-              { name: Status.TODO.toString(), children: [] },
-              { name: Status.IN_PROGRESS.toString(), children: [] },
-              { name: Status.DONE.toString(), children: [] },
-              { name: Status.BLOCKED.toString(), children: []},
-              { name: Status.NOT_VALID.toString(), children: [] }
+              { name: Status.TODO.toString(), children: [], rootProjectName: this.name },
+              { name: Status.IN_PROGRESS.toString(), children: [], rootProjectName: this.name },
+              { name: Status.DONE.toString(), children: [], rootProjectName: this.name },
+              { name: Status.BLOCKED.toString(), children: [], rootProjectName: this.name},
+              { name: Status.NOT_VALID.toString(), children: [], rootProjectName: this.name }
             ]
         }];
         STATUSES.forEach((status, i) => {
             if (this.tasksTree[0].children && this.tasksTree[0].children[i]) {
                 const tasks: Task[] = this.tasksMap.get(status)!;
                 this.tasksTree[0].children[i].children = tasks.map(t => {
-                  return {name: `[${t.id}] ${t.name}`} as TaskNode
+                    return {name: `[${t.id}] ${t.name}`, assignee: t.assignee, rootProjectName: this.name} as TaskNode
                 });
             }
         });

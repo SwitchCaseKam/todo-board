@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TasksViewService } from '../../tasks-board/services/tasks-view.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 enum TaskEditorMode {
   VIEW = 'view',
@@ -42,11 +43,13 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
   };
   
   private formBuilder: FormBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
   private taskService: TasksService = inject(TasksService);
   private tasksViewService: TasksViewService = inject(TasksViewService);
   private modalService: ModalService = inject(ModalService);
   private selectedProjectName: string = '';
   private selectedProjectNameSub = new Subscription();
+  protected assignees: string[] = [];
 
   public taskForm = this.mode === TaskEditorMode.CREATE 
     ? this.formBuilder.group({
@@ -70,7 +73,8 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
   public ngOnInit(): void {
     this.selectedProjectNameSub = this.tasksViewService.getSelectedProjectName$().subscribe(
       selectedProjectName => this.selectedProjectName = selectedProjectName
-    )
+    );
+    this.assignees = this.authService.getAllRegisteredUsers();
   }
 
   public ngOnDestroy(): void {

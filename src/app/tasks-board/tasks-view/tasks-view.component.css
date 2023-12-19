@@ -1,5 +1,6 @@
 .tasks-view {
-    background-color: rgb(53, 49, 49);
+    /* background-color: rgb(53, 49, 49); */
+    background-color: black;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
 }

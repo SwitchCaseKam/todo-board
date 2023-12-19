@@ -4,11 +4,11 @@
     </div>
     <div class="tasks-board__central-view">
         <div *ngIf="selectedProjectName !== ''">
-            <app-operation-menu></app-operation-menu>
+            <app-operation-menu (filtered)="handleFilter($event)"></app-operation-menu>
             <app-tasks-view [tasks]="tasksView"></app-tasks-view>
         </div>
         <div *ngIf="selectedProjectName === ''">
-            <h1>Choose project</h1>
+            <h2 class="information-text">Create new project or choose existing one</h2>
         </div>
 
     </div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { FlatNode } from '../models/project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export class TaskSelectService {
   private currentSelectedTaskId: number|undefined = undefined;
   private currentSelectedTaskId$: BehaviorSubject<number|undefined > = 
     new BehaviorSubject<number|undefined>(this.currentSelectedTaskId);
+
 
   constructor() { }
 
@@ -25,8 +27,4 @@ export class TaskSelectService {
     this.currentSelectedTaskId = undefined;
     this.currentSelectedTaskId$.next(this.currentSelectedTaskId);
   }
-
-
-
-
 }

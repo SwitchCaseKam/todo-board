@@ -44,15 +44,17 @@ export class TasksBoardComponent implements OnInit, OnDestroy{
     });
 
     this.tasksViewService.getSelectedProjectName$().subscribe(
-      projectName => {
-        console.log('[tasks-board-component] selected project', projectName)
-        this.selectedProjectName = projectName;
-      }
+      projectName => this.selectedProjectName = projectName
     );
   }
 
   public ngOnDestroy(): void {
     this.projectsDataSubscription.unsubscribe();
+  }
+
+  public handleFilter(userName: string): void {
+    console.log('data should by filtered for ', userName);
+    this.tasksViewService.filterUserData(userName);
   }
 
 }

@@ -1,9 +1,10 @@
 <div [ngClass]="{'task-selected': isSelected}" class="task" draggable="true" (mousedown)="onDragStart()" (click)="displayTaskView()">
     <div class="header task__header">
-        <div>
-            <p class="header__status">{{ data.status }}</p>  
-            <span class="header__id">ID: {{ data.id }}</span>
-        </div> 
+        
+        <span class="header__status">{{ data.status }}</span> 
+        <br> 
+        <!-- <p class="header__id">ID: {{ data.id }}</p> -->
+        
         <h1 class="header__title">{{ data.name }}</h1>
     </div>
 
@@ -17,8 +18,8 @@
         <span class="footer__assignee">Assignee: <b>{{ data.assignee }}</b></span>
         <div>
             <span class="footer__remaining-effort">Effort: <b></b>{{ data.estimation }} h</span>
-            <br>
-            <span class="footer__date">Created: {{ data.creationDate }}</span>
+            <!-- <br>
+            <span class="footer__date">Created: {{ data.creationDate }}</span> -->
         </div>
     </div>
 </div>

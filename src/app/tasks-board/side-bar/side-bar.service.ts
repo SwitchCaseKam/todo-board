@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { FlatNode } from '../models/project.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SideBarService {
 
-  private previousExpansionModel: FlatNode[] = [];
+  private tasksListExpansionModel: FlatNode[] = [];
 
   constructor() { }
 
-  getPrevExpansionModel(): FlatNode[] {
-    return this.previousExpansionModel;
+  public setTasksListExpansionModel(tasksListExpansionModel: FlatNode[]): void {
+    this.tasksListExpansionModel = tasksListExpansionModel;
   }
 
-  setPrevExpansionModel(expansionModel: FlatNode[]) {
-    this.previousExpansionModel = expansionModel;
+  public getTaskListExpansionModel(): FlatNode[] {
+    return this.tasksListExpansionModel;
   }
 }

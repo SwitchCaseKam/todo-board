@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { inject } from '@angular/core';
 import { TaskEditorComponent } from '../../shared/task-editor/task-editor.component';
@@ -10,8 +10,7 @@ import {
 } from '@angular/cdk/menu';
 import { TasksViewService } from '../services/tasks-view.service';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-
-
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-operation-menu',
@@ -36,6 +35,12 @@ export class OperationMenuComponent implements OnInit {
   protected projectName: string = 'Default name';
   private modalService = inject(ModalService);
   private tasksViewService: TasksViewService = inject(TasksViewService);
+  private authService: AuthService = inject(AuthService);
+  private currentLoggedUserName: string = '';
+  protected allUsers: string[] = [];
+  protected filteredUser = '';
+
+  @Output() filtered = new EventEmitter<string>();
 
   public openTaskModalCreation(): void {
     const dialogRef = this.modalService.open('task', TaskEditorComponent);
@@ -47,15 +52,23 @@ export class OperationMenuComponent implements OnInit {
   public ngOnInit(): void {
     this.tasksViewService.getSelectedProjectName$().subscribe(
       selectedProjectName => this.projectName = selectedProjectName
-    )
+    );
+
+    this.allUsers = this.authService.getAllRegisteredUsers();
+
+    this.authService.getCurrentLoggedInUsername$().subscribe(
+      currentLoggedUserName => this.currentLoggedUserName = currentLoggedUserName
+    );
   }
 
   public handledTasksAssignedToMe(): void {
-
+    this.filtered.emit(this.currentLoggedUserName);
+    this.filteredUser = this.currentLoggedUserName;
   }
 
-  public handledFilterByAssignee(): void {
-
+  public handledFilterByAssignee(userName: string): void {
+    this.filtered.emit(userName);
+    this.filteredUser = userName;
   }
 
   public sortByPriority(): void {
@@ -63,5 +76,10 @@ export class OperationMenuComponent implements OnInit {
 
   public sortByEffort(asc: boolean = true): void {
 
+  }
+
+  protected removeFilter(): void {
+    this.filteredUser = '';
+    this.filtered.emit('');
   }
 }

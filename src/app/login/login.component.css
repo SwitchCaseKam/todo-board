@@ -16,10 +16,20 @@
     font-size: 1em;
     font-weight: bold;
     padding: 0.2em 2em;
+    display: flex;
+    justify-content: space-around;
 }
 
 .login__login-name-input, .login__password-input {
     font-size: 1em;
     padding: 0.2em;
     margin: 0.25em;
+}
+
+.login__error {
+    color: red;
+}
+
+.login__information {
+    font-size: 0.75em;
 }

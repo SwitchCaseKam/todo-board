@@ -1,5 +1,5 @@
-<button mat-button class="create-project-button" (click)="createNewProject()">Create New Project [+]</button>
-<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+<button mat-button class="create-project-button" (click)="createNewProject()">Create New Project</button>
+<mat-tree class='projects-tree' [dataSource]="dataSource" [treeControl]="treeControl">
   <!-- This is the tree node template for leaf nodes -->
   <mat-tree-node class="task-node" *matTreeNodeDef="let node" matTreeNodePadding (click)="selectTask(node)">
     <!-- use a disabled button to provide padding for tree leaf -->
@@ -8,7 +8,7 @@
   </mat-tree-node>
   <!-- This is the tree node template for expandable nodes -->
   <mat-tree-node class='project-node' *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding (click)="selectProject(node)">
-    <button mat-icon-button matTreeNodeToggle
+    <button mat-icon-button matTreeNodeToggle (click)="expandClicked()"
             [attr.aria-label]="'Toggle ' + node.name">
       <mat-icon class="mat-icon-rtl-mirror">
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}

@@ -5,3 +5,13 @@
     align-items: center;
     padding: 1em;
 }
+
+.project-creator__error {
+    color: red
+}
+
+.project-creator__buttons {
+    margin: 1em;
+    display: flex;
+    justify-content: center;
+}

@@ -38,6 +38,7 @@ export class TasksViewService {
       this.fillSideBarInfo(projectsData);
       this.projects = projectsData;
       if (this.selectedProjectName !== '') {
+        this.fillSideBarInfo(projectsData);
         this.tasksViewData.operationMenu = projectsData.filter(project => project.name === this.selectedProjectName)[0].tasksMap;
         this.tasksViewData.tasksView = projectsData.filter(project => project.name === this.selectedProjectName)[0].tasks;  
       } 
@@ -71,6 +72,7 @@ export class TasksViewService {
 
   public filterUserData(userName: string): void {
     this.tasksViewData.tasksView = this.projects.filter(project => project.name === this.selectedProjectName)[0].tasks;
+    this.fillSideBarInfo(this.projects);
     if (userName !== '') {
       this.tasksViewData.tasksView = this.tasksViewData.tasksView.filter(task => task.assignee === userName);
       
@@ -86,6 +88,8 @@ export class TasksViewService {
       const filteredProject = new Project(this.selectedProjectName, this.tasksViewData.tasksView);
       console.log('filteredProject:', filteredProject)
       
+      
+      this.fillSideBarInfo([filteredProject])
       const projects: TaskNode[][] = [];
       // projectNamesWithTasksForUser.forEach(project => {
           console.log('xc')

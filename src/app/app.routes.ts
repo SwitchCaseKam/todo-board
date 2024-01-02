@@ -16,7 +16,7 @@ export const routes: Routes = [
     {
         path: 'board',
         loadComponent: () => import('./tasks-board/tasks-board.component').then((m) => m.TasksBoardComponent),
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         title: 'Tasks Board'
     },
     {

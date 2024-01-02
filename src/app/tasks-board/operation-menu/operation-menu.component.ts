@@ -11,6 +11,7 @@ import {
 import { TasksViewService } from '../services/tasks-view.service';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
+import { OperationMenuService } from './operation-menu.service';
 
 @Component({
   selector: 'app-operation-menu',
@@ -36,6 +37,7 @@ export class OperationMenuComponent implements OnInit {
   private modalService = inject(ModalService);
   private tasksViewService: TasksViewService = inject(TasksViewService);
   private authService: AuthService = inject(AuthService);
+  private operationMenuService: OperationMenuService = inject(OperationMenuService);
   private currentLoggedUserName: string = '';
   protected allUsers: string[] = [];
   protected filteredUser = '';
@@ -59,16 +61,20 @@ export class OperationMenuComponent implements OnInit {
     this.authService.getCurrentLoggedInUsername$().subscribe(
       currentLoggedUserName => this.currentLoggedUserName = currentLoggedUserName
     );
+
+    this.operationMenuService.getFilteredUserName$().subscribe(userName => this.filteredUser = userName);
   }
 
   public handledTasksAssignedToMe(): void {
     this.filtered.emit(this.currentLoggedUserName);
     this.filteredUser = this.currentLoggedUserName;
+    this.operationMenuService.setFiltereUserName(this.filteredUser);
   }
 
   public handledFilterByAssignee(userName: string): void {
     this.filtered.emit(userName);
     this.filteredUser = userName;
+    this.operationMenuService.setFiltereUserName(this.filteredUser);
   }
 
   public sortByPriority(): void {
@@ -80,6 +86,7 @@ export class OperationMenuComponent implements OnInit {
 
   protected removeFilter(): void {
     this.filteredUser = '';
+    this.operationMenuService.setFiltereUserName(this.filteredUser);
     this.filtered.emit('');
   }
 }

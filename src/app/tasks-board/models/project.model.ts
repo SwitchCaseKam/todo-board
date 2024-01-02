@@ -110,7 +110,7 @@ export class Project {
             if (this.tasksTree[0].children && this.tasksTree[0].children[i]) {
                 const tasks: Task[] = this.tasksMap.get(status)!;
                 this.tasksTree[0].children[i].children = tasks.map(t => {
-                    return {name: `[${t.id}] ${t.name}`, assignee: t.assignee, rootProjectName: this.name} as TaskNode
+                    return {name: `[${t.id}] ${t.name} */&%^${this.name}`, assignee: t.assignee, rootProjectName: this.name} as TaskNode
                 });
             }
         });

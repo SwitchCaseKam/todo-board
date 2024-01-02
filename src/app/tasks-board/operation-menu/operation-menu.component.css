@@ -10,6 +10,11 @@
     margin-left: 1em;
 }
 
+.category-header__menu:hover {
+  cursor: pointer;
+  filter: invert(1);
+}
+
 .menu__right-options {
   display: flex;
   align-items: center;

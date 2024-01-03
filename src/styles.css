@@ -13,10 +13,14 @@ body {
     --black-color: rgb(0, 0, 0);
     --white-color: rgb(255, 255, 255);
     --hover-color: rgb(255,165,0);
+    --orange-color: rgb(219, 202, 67);
     --grey-color: rgb(192,192,192);
+    --blue-color: rgb(0, 162, 255);
+    --red-color: red;
     --dark-grey-color: rgb(136, 129, 129);
     --light-grey-color: rgb(209, 205, 205);
+    --background-grey-color: rgb(81, 82, 76);
 }
+
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-weight: normal;}
 

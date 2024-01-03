@@ -29,7 +29,4 @@ export class HeaderComponent implements OnInit {
   protected logOut(): void {
     this.authService.logOut();
   }
-
-
-
 }

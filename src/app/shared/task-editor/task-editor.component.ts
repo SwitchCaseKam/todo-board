@@ -47,6 +47,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
   private taskService: TasksService = inject(TasksService);
   private tasksViewService: TasksViewService = inject(TasksViewService);
   private modalService: ModalService = inject(ModalService);
+  
   private selectedProjectName: string = '';
   private selectedProjectNameSub = new Subscription();
   protected assignees: string[] = [];
@@ -96,14 +97,12 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
   }
 
   public cancel(event: Event): void {
-    console.log(event)
     event.stopPropagation()
   }
 
   public removeTask(event: Event): void {
     this.taskService.deleteTask(this.selectedProjectName, this.data.id);
     event.preventDefault()
-
   }
 
   public editMode(): void {
@@ -139,17 +138,4 @@ export class TaskEditorComponent implements OnInit, OnDestroy{
       this.taskForm.value.estimation
     );
   }
-
-  // id: number,
-  // name: string,
-  // description: string,
-  // status: Status,
-  // assignee: string,
-  // creationDate?: string,
-  // estimation: number
-
-
-
-
-  
 }

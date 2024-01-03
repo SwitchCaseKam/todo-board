@@ -26,10 +26,6 @@ export class TasksService {
     return this.projects$;
   }
 
-  public getProjects2(): Project[] {
-    return this.projects;
-  }
-
   public createNewProject(projectName: string) {
     this.projects.push(new Project(projectName, []));
     this.projects$.next(this.projects);
@@ -87,7 +83,6 @@ export class TasksService {
   public updateProjectData(projectName: string, tasks: Task[]): void {
     const currentProject = this.projects.find(p => p.name === projectName);
     const currentProjectIndex = this.projects.findIndex(p => p.name === projectName);
-
     if (currentProject) { 
       currentProject.updateData(tasks);
       this.projects[currentProjectIndex] = currentProject;

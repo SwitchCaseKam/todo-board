@@ -20,7 +20,7 @@
 }
 
 .info__paddle:nth-child(2n) {
-    background-color: rgb(44, 44, 44);
+    background-color: var(--background-grey-color);
 }
 
 a {

@@ -8,14 +8,11 @@
 .tasks-board__side-bar {
     width: 100%;
     height: 100%;
-    border: 1px solid red;
 }
 
 .tasks-board__central-view {
-    /* width: 80em; */
     grid-column-start: 2;
     grid-column-end: 7;
-    border: 1px solid green;
 }
 
 .information-text {

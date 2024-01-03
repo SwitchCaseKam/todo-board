@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FlatNode } from '../models/project.model';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

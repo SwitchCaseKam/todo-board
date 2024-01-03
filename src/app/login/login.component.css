@@ -27,7 +27,7 @@
 }
 
 .login__error {
-    color: red;
+    color: var(--red-color);
 }
 
 .login__information {

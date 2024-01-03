@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   protected logOut(): void {
     this.authService.logOut();
-    this.router.navigate(['/loxxxgin']);
+    this.router.navigate(['/login']);
   }
 
   private validateUserName(): ValidatorFn {

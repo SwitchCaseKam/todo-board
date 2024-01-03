@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { inject } from '@angular/core';
 import { TaskEditorComponent } from '../../shared/task-editor/task-editor.component';
@@ -9,9 +9,10 @@ import {
   CdkMenu, CdkMenuTrigger, CdkMenuItem, CdkMenuBar,
 } from '@angular/cdk/menu';
 import { TasksViewService } from '../services/tasks-view.service';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
 import { OperationMenuService } from './operation-menu.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-operation-menu',
@@ -32,61 +33,59 @@ import { OperationMenuService } from './operation-menu.service';
   templateUrl: './operation-menu.component.html',
   styleUrl: './operation-menu.component.css'
 })
-export class OperationMenuComponent implements OnInit {
+export class OperationMenuComponent implements OnInit, OnDestroy {
   protected projectName: string = 'Default name';
+  protected allUsers: string[] = [];
+  protected filteredUser = '';
+  private subs: Set<Subscription> = new Set();
+
   private modalService = inject(ModalService);
   private tasksViewService: TasksViewService = inject(TasksViewService);
   private authService: AuthService = inject(AuthService);
   private operationMenuService: OperationMenuService = inject(OperationMenuService);
   private currentLoggedUserName: string = '';
-  protected allUsers: string[] = [];
-  protected filteredUser = '';
 
   @Output() filtered = new EventEmitter<string>();
 
-  public openTaskModalCreation(): void {
+  public ngOnInit(): void {
+    this.subs.add(this.tasksViewService.getSelectedProjectName$().subscribe(
+      selectedProjectName => this.projectName = selectedProjectName
+    ));
+    this.subs.add(this.authService.getCurrentLoggedInUsername$().subscribe(
+      currentLoggedUserName => this.currentLoggedUserName = currentLoggedUserName
+    ));
+    this.subs.add(this.operationMenuService.getFilteredUserName$().subscribe(
+      userName => this.filteredUser = userName
+    ));
+    this.allUsers = this.authService.getAllRegisteredUsers();
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  protected openTaskModalCreation(): void {
     const dialogRef = this.modalService.open('task', TaskEditorComponent);
     dialogRef.componentRef?.setInput('title', 'Create New Task');
     dialogRef.componentRef?.setInput('mode', 'create');
     dialogRef.afterClosed().subscribe();
   }
 
-  public ngOnInit(): void {
-    this.tasksViewService.getSelectedProjectName$().subscribe(
-      selectedProjectName => this.projectName = selectedProjectName
-    );
-
-    this.allUsers = this.authService.getAllRegisteredUsers();
-
-    this.authService.getCurrentLoggedInUsername$().subscribe(
-      currentLoggedUserName => this.currentLoggedUserName = currentLoggedUserName
-    );
-
-    this.operationMenuService.getFilteredUserName$().subscribe(userName => this.filteredUser = userName);
-  }
-
-  public handledTasksAssignedToMe(): void {
+  protected handledTasksAssignedToMe(): void {
     this.filtered.emit(this.currentLoggedUserName);
     this.filteredUser = this.currentLoggedUserName;
     this.operationMenuService.setFiltereUserName(this.filteredUser);
   }
 
-  public handledFilterByAssignee(userName: string): void {
+  protected handledFilterByAssignee(userName: string): void {
     this.filtered.emit(userName);
     this.filteredUser = userName;
     this.operationMenuService.setFiltereUserName(this.filteredUser);
   }
 
-  public sortByPriority(): void {
-  }
-
-  public sortByEffort(asc: boolean = true): void {
-
-  }
-
   protected removeFilter(): void {
     this.filteredUser = '';
     this.operationMenuService.setFiltereUserName(this.filteredUser);
-    this.filtered.emit('');
+    this.filtered.emit(this.filteredUser);
   }
 }

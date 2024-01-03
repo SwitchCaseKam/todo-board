@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { OperationMenuComponent } from './operation-menu/operation-menu.component';
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
-import { TasksService } from './services/tasks.service';
 import { Subscription } from 'rxjs';
-import { Project, TaskNode, tasksMapInitValue } from './models/project.model';
+import { TaskNode, tasksMapInitValue } from './models/project.model';
 import { Status, Task } from './tasks-view/models/task.model';
 import { TasksViewService } from './services/tasks-view.service';
 import { cloneDeep } from 'lodash';
@@ -26,34 +25,30 @@ import { cloneDeep } from 'lodash';
 })
 export class TasksBoardComponent implements OnInit, OnDestroy{
 
-  private tasksViewService: TasksViewService = inject(TasksViewService);
-  private projectsDataSubscription: Subscription = new Subscription();
-
+  private subs: Set<Subscription> = new Set();
   protected selectedProjectName = '';
-
   protected sideBarData: TaskNode[] = [];
   protected operationMenu: Map<Status, Task[]> = tasksMapInitValue;
   protected tasksView: Task[] = [];
+  private tasksViewService: TasksViewService = inject(TasksViewService);
 
   public ngOnInit(): void {
-    this.tasksViewService.getTasksViewData$().subscribe(tasksViewData2 => {
+    this.subs.add(this.tasksViewService.getTasksViewData$().subscribe(tasksViewData2 => {
       const tasksViewData = cloneDeep(tasksViewData2);
       this.sideBarData = tasksViewData.sideBar;
       this.operationMenu = tasksViewData.operationMenu;
       this.tasksView = tasksViewData.tasksView;
-    });
-
-    this.tasksViewService.getSelectedProjectName$().subscribe(
+    }));
+    this.subs.add(this.tasksViewService.getSelectedProjectName$().subscribe(
       projectName => this.selectedProjectName = projectName
-    );
+    ));
   }
 
   public ngOnDestroy(): void {
-    this.projectsDataSubscription.unsubscribe();
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   public handleFilter(userName: string): void {
-    console.log('data should by filtered for ', userName);
     this.tasksViewService.filterUserData(userName);
   }
 

@@ -1,4 +1,5 @@
 .tasks-board {
+    position: relative;
     display: flex;
     height: 100%;
     display: grid;
@@ -10,6 +11,10 @@
     height: 100%;
 }
 
+.tasks-board__side-bar-mobile-button {
+    display: none;
+}
+
 .tasks-board__central-view {
     grid-column-start: 2;
     grid-column-end: 7;
@@ -18,4 +23,32 @@
 .information-text {
     text-align: center;
     font-weight: lighter;
+}
+
+@media only screen and (max-width: 1000px) {
+    .tasks-board__side-bar  {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    .tasks-board__central-view {
+        grid-column-start: 1;
+        grid-column-end: 7;
+    }
+
+    .tasks-board__side-bar-mobile-button {
+        display: block;
+        background-color: var(--white-color);
+        border: 1px solid var(--black-color);
+        font-size: 1em;
+        text-align: center;
+    }
 }

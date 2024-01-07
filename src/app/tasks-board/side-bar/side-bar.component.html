@@ -1,4 +1,8 @@
-<button mat-button class="create-project-button" (click)="createNewProject()">Create New Project</button>
+<div class="side-bar-operation-buttons">
+  <button mat-button class="create-project-button" (click)="createNewProject()">Create New Project</button>
+  <button mat-button class="close-side-bar-mobile-view create-project-button" (click)="closeSideBarForMobileView()">X</button>
+</div>
+
 <mat-tree class='projects-tree' [dataSource]="dataSource" [treeControl]="treeControl">
   <!-- This is the tree node template for leaf nodes -->
   <mat-tree-node class="task-node" *matTreeNodeDef="let node" matTreeNodePadding (click)="selectTask(node)">

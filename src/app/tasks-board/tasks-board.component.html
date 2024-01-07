@@ -2,6 +2,7 @@
     <div class="tasks-board__side-bar">
         <app-side-bar [projects]="sideBarData"></app-side-bar>
     </div>
+    <button class="tasks-board__side-bar-mobile-button">Projects</button>
     <div class="tasks-board__central-view">
         <div *ngIf="selectedProjectName !== ''">
             <app-operation-menu (filtered)="handleFilter($event)"></app-operation-menu>

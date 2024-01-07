@@ -21,3 +21,10 @@
     margin-left: 10em;
     margin-right: 10em;
 }
+
+@media only screen and (max-width: 1000px) {
+    .main-container {
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+    }
+}

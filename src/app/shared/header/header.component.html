@@ -1,11 +1,16 @@
 <div class="header">
     <h1 class="header__title" [routerLink]="['/home']">todo board</h1>
-    <div class="header__menu" *ngIf="logInFlag">
+    <div class="header__menu" [ngStyle]="{'visibility': isLoggedIn ? 'visible' : 'hidden' }">
         <ul class="options">
-            <!-- <li class="option" [routerLink]="['/home']">Home</li> -->
             <li class="option" [routerLink]="['/board']">Board</li>
             <li>Logged In user: <b>{{currentLoggedInUsername}}</b></li>
             <li class="option" (click)="logOut()" [routerLink]="['/login']">Log Out</li>
         </ul>
+                
+        <div class="hamburger-menu">
+            <div class="horizontal-bar"></div>
+            <div class="horizontal-bar"></div>
+            <div class="horizontal-bar"></div>
+        </div>
     </div>
-</div>
+ </div>

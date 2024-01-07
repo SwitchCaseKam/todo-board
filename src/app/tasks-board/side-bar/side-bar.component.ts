@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewChild, inject, Pipe, PipeTransform } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild, inject, Pipe, PipeTransform, Renderer2, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTree, MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,7 +43,11 @@ export class SideBarComponent implements OnInit, OnChanges {
   private tasksViewService: TasksViewService = inject(TasksViewService);
   private taskSelectService: TaskSelectService = inject(TaskSelectService);
   private sideBarService: SideBarService = inject(SideBarService);
-  private modalService = inject(ModalService);
+  private modalService: ModalService = inject(ModalService);
+  private renderer2: Renderer2 = inject(Renderer2);
+  private el: ElementRef = inject(ElementRef);
+
+
   private prevExpansionModel: FlatNode[] = [];
   protected treeControl = new FlatTreeControl<FlatNode>(
     (node) => node.level,
@@ -81,6 +85,13 @@ export class SideBarComponent implements OnInit, OnChanges {
     const dialogRef = this.modalService.open('project', ProjectCreatorComponent);
     dialogRef.componentRef?.setInput('projectsNames', projectsNames);
     dialogRef.afterClosed().subscribe();
+  }
+
+  protected closeSideBarForMobileView(): void {
+    const sideBar = document.querySelector('.tasks-board__side-bar') as HTMLElement;
+      if (sideBar) {
+        sideBar.style.width = '0';
+      } 
   }
 
   protected selectTask(node: FlatNode): void {

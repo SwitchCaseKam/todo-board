@@ -20,7 +20,9 @@ body {
     --dark-grey-color: rgb(136, 129, 129);
     --light-grey-color: rgb(209, 205, 205);
     --background-grey-color: rgb(81, 82, 76);
+
+    --min-width: 1000px;
 }
 
-html, body { height: 100%; }
+
 

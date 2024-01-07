@@ -42,6 +42,7 @@ export class TasksBoardComponent implements OnInit, OnDestroy{
     this.subs.add(this.tasksViewService.getSelectedProjectName$().subscribe(
       projectName => this.selectedProjectName = projectName
     ));
+    this.handleProjectsSideBarForMobileView();
   }
 
   public ngOnDestroy(): void {
@@ -50,6 +51,16 @@ export class TasksBoardComponent implements OnInit, OnDestroy{
 
   public handleFilter(userName: string): void {
     this.tasksViewService.filterUserData(userName);
+  }
+
+  private handleProjectsSideBarForMobileView(): void {
+    const projectsButton = document.querySelector('.tasks-board__side-bar-mobile-button');
+    projectsButton?.addEventListener('click', (e) => {
+      const sideBar = document.querySelector('.tasks-board__side-bar') as HTMLElement;
+      if (sideBar) {
+        sideBar.style.width = '100%';
+      } 
+    })
   }
 
 }
